@@ -1,22 +1,29 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
 
-const port = 3000;
-//app.get('/', function(req, res){
-//  res.sendFile(__dirname + '/public/index.html');
-//});
+const express        = require('express');
+const MongoClient    = require('mongodb').MongoClient;
+const bodyParser     = require('body-parser');
+const db             = require('./src/db');
+const app            = express();
+const port = 8000;
+app.use(bodyParser.urlencoded({ extended: true }));
+let a = {'hello': 'doc'};
 
-io.on('connection', function(socket){
-  console.log('a user connected');
-  socket.on('eventServer', function (data) {
-    console.log(data);
-    socket.emit('eventClient', { data: 'Hello Client' });
-});
-});
+/*
+MongoClient.connect(db.url, (err, database) => {
+  if (err) return console.log(err);
+  require('./routes')(app, database);
+  database.collection('notes').insertOne(
+    {
+      title: 'Hello MongoDB',
+      text: 'Hopefully this works!'
+    }
+  )
+  app.listen(port, () => {
+    console.log('We are live on ' + port);
+  });     
+})
+
+*/
 
 
 
-http.listen(port, function(){
-  console.log('listening on ' + port);
-});
