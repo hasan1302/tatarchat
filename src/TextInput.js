@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import objects from './TatarChat';
 
+//const rout = require('./note_routes');
+
 
 class TextInput extends Component {
     constructor(props) {
