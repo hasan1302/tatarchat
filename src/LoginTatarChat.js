@@ -5,7 +5,7 @@ import TatarChat from './TatarChat'
 class LoginTatarChat extends Component {
     constructor(props) {
         super(props);
-        this.state = {name: "Admin", submitted: true};
+        this.state = {username: "", submitted: false};
         this.userNameSubmit = this.userNameSubmit.bind(this);
         this.userNameChange = this.userNameChange.bind(this);
     }
@@ -17,13 +17,15 @@ class LoginTatarChat extends Component {
     userNameSubmit(event) {
         event.preventDefault();
         this.setState({ username: this.state.username, submitted: true });
+        localStorage.setItem("username", this.state.username);
+        localStorage.setItem("submitted", "true");
       //  console.log(this.state.name + " submitted")  // NE STIRAI!!!! I POPROBUI ESHE RAZ EE ZDELAT!!!
     }
 
     render() {
-        if (this.state.submitted) {
+        if (localStorage.getItem("submitted")) {
             return (
-              <TatarChat name={this.state.name} />
+              <TatarChat name={this.state.username} />
             );
           }
          

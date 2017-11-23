@@ -1,9 +1,10 @@
 
+
+
+
 import React from "react";
 import ReactDOM from "react-dom";
 import LoginTatarChat from './LoginTatarChat';
-
-
 
 
 ReactDOM.render(
@@ -13,4 +14,4 @@ ReactDOM.render(
 
 
 
-//export default LoginTatarChat;
+export default LoginTatarChat;

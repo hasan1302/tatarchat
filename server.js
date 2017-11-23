@@ -1,33 +1,37 @@
 
-const express        = require('express');
-const MongoClient    = require('mongodb').MongoClient;
-const bodyParser     = require('body-parser');
-const db             = require('./src/db');
-const app            = express();
+const express = require('express');
+const bodyParser= require('body-parser');
+const app = express();
 const port = 8000;
-app.use(bodyParser.urlencoded({ extended: true }));
+const dbUrl = 'mongodb://pipette307:bgvjhxtq@ds157185.mlab.com:57185/tatarchat';
+const MongoClient = require('mongodb').MongoClient;
 
-app.listen(port, () => {
-  console.log('We are live on ' + port);
-}); 
+var db;
 
-let a =    {
-  from: 'MongoDEBIL',
-  text: 'Hopefully this works!',
-  to: "Vov"
-};
+MongoClient.connect(dbUrl,(err, database) => {
+  if (err) return console.log("Error connecting to Mongo");
+  db = database;
+  app.listen(port, () => {
+    console.log("Server is running on port: " + port);
+  })
+});
 
-function insertInHistory(obj) {
-MongoClient.connect(db.url, (err, database) => {
-  if (err) return console.log(err);
- // require('./routes')(app, database);
-  database.collection('notes').insertOne(obj)   
+app.use(bodyParser.urlencoded({extended: true}))
+
+app.post('/postmessage', (req, res) => {
+  db.collection('messages').save(req.body, (err, result) => {
+    if (err) return console.log(err);
+    console.log('saved message to database');
+    res.redirect('http://localhost:3000/');
+  })
 })
 
-}
-
-
-insertInHistory(a);
-
-
+app.get('/messages', (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  db.collection('messages').find().toArray((err, result) => {
+    if (err) return console.log(err)
+      res.send(result);
+  });
+  
+});
 
