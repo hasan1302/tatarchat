@@ -14,32 +14,33 @@ const itemLinks = [
 class Carousel extends Component {
     constructor(props) {
         super(props);
-        this.index = Array.from(Array(itemLinks.length), (_,x) => x);
-        this.state = {index: this.index};
-    }
-
-    update = () => {
-        this.setState({
-            index: this.index
-        });
+        this.state = {
+            images: itemLinks
+        }
     }
 
     nextItem = () => {
-        this.index.push(this.index.shift());
-        this.update();
+        itemLinks.push(itemLinks.shift());
+        this.updateImages();
     }
 
     previousItem = () => {
-        this.index.unshift(this.index.pop());
-        this.update();
+        itemLinks.unshift(itemLinks.pop());
+        this.updateImages();
+    }
+
+    updateImages() {
+        this.setState({
+            images: itemLinks
+        });
     }
 
     render() {
             return (
             <div>
-                <img src={itemLinks[this.state.index[0]]} style={{maxWidth:150}} alt="first item" onClick={this.previousItem}/>
-                <img src={itemLinks[this.state.index[1]]} style={{maxWidth:300}} alt="main item"/>
-                <img src={itemLinks[this.state.index[2]]} style={{maxWidth:150}} alt="last item" onClick={this.nextItem}/>
+                <img src={[this.state.images[0]]} style={{maxWidth:150}} alt="first item" onClick={this.previousItem}/>
+                <img src={[this.state.images[1]]} style={{maxWidth:300}} alt="main item"/>
+                <img src={[this.state.images[2]]} style={{maxWidth:150}} alt="last item" onClick={this.nextItem}/>
             </div>
             );
     }
