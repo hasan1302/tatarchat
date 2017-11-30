@@ -1,38 +1,41 @@
 import React, {Component} from 'react';
-import objects from './TatarChat';
+import $ from 'jquery';
 
 class TextInput extends Component {
     constructor(props) {
         super(props);
         this.state = {text: "", username: this.props.username}
         this.send = this.send.bind(this);
+        this.typing = this.typing.bind(this);
+        
     }
 
   
 
     typing(event) {
         this.setState({text: event.target.value});
+       // this.props.upd(this.state.text);
       }
 
 
 
     send(event) {
-        const message = {from: this.props.name, text: this.state.text}
-       // db.notes.insertOne(message);
-        objects.push(message);
-       // console.log("pushed" + message);
+        console.log(this.state.username + "  posted  " + this.state.text);
         event.preventDefault();
-       // this.setState = {text: text}
+        $.post( "http://localhost:8000/postmessage", { name: this.state.username, message: this.state.text } );
+        //event.target.value = "";
+        this.setState({text: this.state.text, username: this.state.username});
+        this.props.upd(this.state.text);
     }
 
-    render() {//
+    render() {
         return (
-            <form method="post" action="http://localhost:8000/postmessage"> 
+            <form onSubmit={this.send}> 
             <div>
                 <input
                 type="text"
-               // onChange={this.typing}
-               // value = {this.state.value}
+                onChange={this.typing}
+                value = {this.state.value}
                 placeholder="write here..."
                 name="message"
                 required />

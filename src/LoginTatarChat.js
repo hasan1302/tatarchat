@@ -16,16 +16,18 @@ class LoginTatarChat extends Component {
 
     userNameSubmit(event) {
         event.preventDefault();
-        this.setState({ username: this.state.username, submitted: true });
+
         localStorage.setItem("username", this.state.username);
         localStorage.setItem("submitted", "true");
+        this.setState({ username: this.state.username, submitted: true });
       //  console.log(this.state.name + " submitted")  // NE STIRAI!!!! I POPROBUI ESHE RAZ EE ZDELAT!!!
     }
+
 
     render() {
         if (localStorage.getItem("submitted")) {
             return (
-              <TatarChat name={this.state.username} />
+              <TatarChat username={localStorage.getItem("username")} />
             );
           }
          
